@@ -59,28 +59,27 @@ MinifyEach.prototype.processFiles = function() {
 
     destOut = (dest.charAt[dest.length - 1] === "/") ? dest : dest + "/";
 
-    this.sources.forEach(function(f) {
+    this.sources.forEach( function ( f ) {
         var i, slen;
         slen = f.src.length;
-        for (i = 0; i < slen; i += 1) {
-            // pseudo filter
-            if (f.src[i].indexOf("min.js") === -1) {
-                fname = f.src[i].replace(/^src\//, '');
+        f.src.filter(function(filepath) {
+        	if ( filepath.indexOf( "min.js" ) === -1 ) {
+                fname = filepath.replace( /^src\//, '' );
 
                 // copy source file
-                grunt.file.copy(f.src[i], destOut + fname);
+                grunt.file.copy( filepath, destOut + fname );
 
                 // create minified dest file 
-                if (minDest === '') {
-                    minFileOut = destOut + fname.replace(".js", "-min.js");
+                if ( minDest === '' ) {
+                    minFileOut = destOut + fname.replace( ".js", "-min.js" );
                 } else {
                     minFileOut = minDest + fname;
-                    grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf("/")));
+                    grunt.file.mkdir( minFileOut.substring( 0, minFileOut.lastIndexOf( "/" ) ) );
                 }
-                compress(destOut + fname, minFileOut, type, params);
+                compress( destOut + fname, minFileOut, type, params );
             }
-        }
-    });
+        });
+    } );
 };
 
 MinifyEach.TASK_NAME = "minify_each";
