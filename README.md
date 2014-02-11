@@ -45,11 +45,23 @@ Default value: `build`
 
 The build directory of where the files should be output to.
 
-#### options.punctuation
+#### options.minDest
 Type: `String`
-Default value: `'.'`
+Default value: ``
 
-A string value that is used to do something else with whatever else.
+If set to a directory location it will create the minified files in that location. This can be useful when using require as you can change baseUrl in require to switch between minified files and none minified files.
+
+#### options.type
+Type: `String`
+Default value: `uglifyjs`
+
+The minify engine to use, see node-minify for the options.
+
+#### options.dest
+Type: `Array`
+Default value: `['--max-line-len=10000', '--lift-vars', '-m']`
+
+Options to pass to the minification engine
 
 ### Usage Examples
 
@@ -74,8 +86,9 @@ In this example, custom options are used to do something else with whatever else
 grunt.initConfig({
   minify_each: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      dest: 'build',
+        type: 'uglifyjs',
+        parameters: ['--max-line-len=10000', '--lift-vars', '-m']
     },
     files: {
       'dest/default_options': ['src/testing', 'src/123'],
