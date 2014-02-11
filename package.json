@@ -1,0 +1,36 @@
+{
+    "name": "grunt-minify-each",
+    "version": "0.1.0",
+    "description": "A grunt plugin to provide a minified version of each file in a source repo",
+    "main": "Gruntfile.js",
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "grunt-init": "~0.2.1",
+        "node-minify": "0.9.1"
+    },
+    "devDependencies": {
+        "grunt-contrib-jasmine": "~0.5.2",
+        "grunt-contrib-jshint": "~0.6.4",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-jsbeautifier": "~0.2.2",
+        "jasmine-node": "~1.11.0",
+        "grunt-jasmine-node": "~0.1.0",
+        "grunt-jasmine-node-coverage": "~0.1.6",
+        "grunt": "~0.4.0",
+        "grunt-cli": "~0.1.9"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/joseph-jja/grunt-minify-each.git"
+    },
+    "author": "Joe Acosta",
+    "license": "GPL",
+    "bugs": {
+        "url": "https://github.com/joseph-jja/grunt-minify-each/issues"
+    }
+}
