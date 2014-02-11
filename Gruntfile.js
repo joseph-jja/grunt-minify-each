@@ -53,9 +53,27 @@ module.exports = function(grunt) {
         },
 
         // Unit tests.
-        nodeunit: {
-            tests: ['test/*_test.js'],
-        },
+        jasmine_node: {
+            src: 'tasks/**/**.js',
+            projectRoot: ".",
+            specFolders: ["./test/"],
+            verbose: true,
+            options: {
+                specNameMatcher: "*_spec*", // load only specs containing specNameMatcher
+                requirejs: false,
+                forceExit: true,
+                jUnit: {
+                    report: false,
+                    savePath: "./coverage/",
+                    useDotNotation: true,
+                    consolidate: true
+                }
+            },
+            coverage: {
+                //collect: ['tasks/**/**.js'],
+                report: ['html']
+            }
+        }
 
     });
 
