@@ -38,7 +38,7 @@ describe("minify each test", function() {
     it("registers itself with grunt", function() {
 
         minify(grunt);
-
+        console.log(grunt.task._tasks);
         // Check that it registered
         expect(grunt.task._tasks[MinifyEach.taskName]).toNotEqual(undefined);
         expect(grunt.task._tasks[MinifyEach.taskName].info).toEqual(MinifyEach.taskDescription);
