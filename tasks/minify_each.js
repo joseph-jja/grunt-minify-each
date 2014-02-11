@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     // Please see the Grunt documentation for more information regarding task
     // creation: http://gruntjs.com/creating-tasks
 
-    grunt.registerMultiTask('minify_each', 'A grunt plugin to provide a minified version of each file in a source repo', function() {
+    grunt.registerMultiTask(MinifyEach.TASK_NAME, MinifyEach.TASK_DESCRIPTION, function() {
         // Merge task-specific and/or target-specific options with these defaults.
         var options, files, minify;
 
