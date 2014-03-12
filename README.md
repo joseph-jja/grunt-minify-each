@@ -27,6 +27,7 @@ grunt.initConfig({
   minify_each: {
     	dest: 'build',
         minDest: '',
+        sourceFilter: /^src\//,
         type: 'uglifyjs',
         parameters: ['--max-line-len=10000', '--lift-vars', '-m']
     },
@@ -44,6 +45,12 @@ Type: `String`
 Default value: `build`
 
 The build directory of where the files should be output to.
+
+#### options.sourceFilter
+Type: `String`
+Default value: /^src\//
+
+If set then it is a filter that is applied to a source file.
 
 #### options.minDest
 Type: `String`
