@@ -11,6 +11,7 @@ function MinifyEach(task, options, sources) {
     this.Defaults = {
         dest: 'build',
         minDest: '',
+        sourceFilter: /^src\//,
         type: 'uglifyjs',
         parameters: ['--max-line-len=10000', '--lift-vars', '-m']
     };
@@ -19,6 +20,7 @@ function MinifyEach(task, options, sources) {
     this.minDest = (!options || !options.minDest) ? this.Defaults.minDest : options.minDest;
     this.type = (!options || !options.type) ? this.Defaults.type : options.type;
     this.parameters = (!options || !options.parameters) ? this.Defaults.parameters : options.parameters;
+    this.sourceFilter = (!options || !options.sourceFilter) ? this.Defaults.sourceFilter : options.sourceFilter;
 }
 
 function compress(sourceFile, destFile, type, params) {
@@ -64,7 +66,7 @@ MinifyEach.prototype.processFiles = function() {
         slen = f.src.length;
         f.src.filter(function(filepath) {
             if (filepath.indexOf("min.js") === -1) {
-                fname = filepath.replace(/^src\//, '');
+                fname = filepath.replace(this.sourceFilter, '');
 
                 // copy source file
                 grunt.file.copy(filepath, destOut + fname);

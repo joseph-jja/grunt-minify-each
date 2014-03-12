@@ -22,6 +22,7 @@ module.exports = function(grunt) {
         options = this.options({
             dest: 'build',
             minDest: '',
+            sourceFilter: /^src\//,
             type: 'uglifyjs',
             parameters: ['--max-line-len=10000', '--lift-vars', '-m']
         });
