@@ -12,6 +12,7 @@ function MinifyEach(task, options, sources) {
         dest: 'build',
         minDest: '',
         sourceFilter: /^src\//,
+        copy: true,
         type: 'uglifyjs',
         parameters: ['--max-line-len=10000', '--lift-vars', '-m']
     };
@@ -21,6 +22,7 @@ function MinifyEach(task, options, sources) {
     this.type = (!options || !options.type) ? this.Defaults.type : options.type;
     this.parameters = (!options || !options.parameters) ? this.Defaults.parameters : options.parameters;
     this.sourceFilter = (!options || !options.sourceFilter) ? this.Defaults.sourceFilter : options.sourceFilter;
+    this.copy = (!options || !options.copy) ? this.Defaults.copy : options.copy;
 }
 
 function compress(sourceFile, destFile, type, params) {
@@ -52,13 +54,14 @@ function compress(sourceFile, destFile, type, params) {
 }
 
 MinifyEach.prototype.processFiles = function() {
-    var destOut, fname, minFileOut, minDest, min, dest, type, params;
+    var destOut, fname, filter, minFileOut, minDest, min, dest, type, params;
 
     dest = this.dest;
     minDest = this.minDest;
     type = this.type;
     params = this.parameters;
-
+    filter = this.sourceFilter;
+    
     destOut = (dest.charAt[dest.length - 1] === "/") ? dest : dest + "/";
 
     this.sources.forEach(function(f) {
@@ -66,10 +69,13 @@ MinifyEach.prototype.processFiles = function() {
         slen = f.src.length;
         f.src.filter(function(filepath) {
             if (filepath.indexOf("min.js") === -1) {
-                fname = filepath.replace(this.sourceFilter, '');
+                fname = filepath.replace(filter, '');
+                console.log("Filename: " + fname + " " + filter);
 
-                // copy source file
-                grunt.file.copy(filepath, destOut + fname);
+                if (this.copy) {
+                    // copy source file
+                    grunt.file.copy(filepath, destOut + fname);
+                }
 
                 // create minified dest file 
                 if (minDest === '') {
