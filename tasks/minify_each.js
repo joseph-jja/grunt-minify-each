@@ -23,7 +23,6 @@ module.exports = function(grunt) {
             dest: 'build',
             minDest: '',
             sourceFilter: /^src\//,
-            copy: true,
             type: 'uglifyjs',
             parameters: ['--max-line-len=10000', '--lift-vars', '-m']
         });
