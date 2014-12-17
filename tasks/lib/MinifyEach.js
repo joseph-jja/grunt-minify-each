@@ -16,7 +16,6 @@ function MinifyEach(task, options, sources) {
         parameters: ['--max-line-len=10000', '--lift-vars', '-m']
     };
 
-    this.completed = (!options || !options.completed) ? undefined : options.completed;
     this.dest = (!options || !options.dest) ? this.Defaults.dest : options.dest;
     this.minDest = (!options || !options.minDest) ? this.Defaults.minDest : options.minDest;
     this.type = (!options || !options.type) ? this.Defaults.type : options.type;
