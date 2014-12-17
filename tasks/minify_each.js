@@ -17,10 +17,11 @@ module.exports = function(grunt) {
 
     grunt.registerMultiTask(MinifyEach.TASK_NAME, MinifyEach.TASK_DESCRIPTION, function() {
         // Merge task-specific and/or target-specific options with these defaults.
-        var options, files, minify;
+        var options, files, minify, complete = this.async();
 
         options = this.options({
             dest: 'build',
+            completed: complete,
             minDest: '',
             sourceFilter: /^src\//,
             type: 'uglifyjs',
@@ -31,6 +32,7 @@ module.exports = function(grunt) {
 
         minify = new MinifyEach(this, options, files);
         minify.processFiles();
+        complete();
     });
 
 };

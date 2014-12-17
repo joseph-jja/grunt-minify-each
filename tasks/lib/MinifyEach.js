@@ -16,6 +16,7 @@ function MinifyEach(task, options, sources) {
         parameters: ['--max-line-len=10000', '--lift-vars', '-m']
     };
 
+    this.completed = (!options || !options.completed) ? undefined : options.completed;
     this.dest = (!options || !options.dest) ? this.Defaults.dest : options.dest;
     this.minDest = (!options || !options.minDest) ? this.Defaults.minDest : options.minDest;
     this.type = (!options || !options.type) ? this.Defaults.type : options.type;
@@ -23,7 +24,7 @@ function MinifyEach(task, options, sources) {
     this.sourceFilter = (!options || !options.sourceFilter) ? this.Defaults.sourceFilter : options.sourceFilter;
 }
 
-function compress(sourceFile, destFile, type, params) {
+MinifyEach.prototype.compress = function(sourceFile, destFile, type, params) {
 
     var comp;
 
@@ -49,10 +50,10 @@ function compress(sourceFile, destFile, type, params) {
     } catch (e) {
         grunt.log.error('File `' + destFile + '` NOT created. ' + e);
     }
-}
+};
 
 MinifyEach.prototype.processFiles = function() {
-    var destOut, fname, filter, minFileOut, minDest, min, dest, type, params;
+    var destOut, fname, filter, minFileOut, minDest, min, dest, type, params, self = this;
 
     dest = this.dest;
     minDest = this.minDest;
@@ -79,7 +80,7 @@ MinifyEach.prototype.processFiles = function() {
                     minFileOut = minDest + fname;
                     grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf("/")));
                 }
-                compress(destOut + fname, minFileOut, type, params);
+                self.compress(destOut + fname, minFileOut, type, params);
             }
         });
     });
