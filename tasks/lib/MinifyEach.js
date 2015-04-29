@@ -52,7 +52,7 @@ MinifyEach.prototype.compress = function(sourceFile, destFile, type, params) {
 };
 
 MinifyEach.prototype.processFiles = function() {
-    var destOut, fname, filter, minFileOut, minDest, min, dest, type, params, self = this;
+    var destOut, fname, filter, minFileOut, minDest, dest, type, params, self = this;
 
     dest = this.dest;
     minDest = this.minDest;
@@ -64,7 +64,7 @@ MinifyEach.prototype.processFiles = function() {
     destOut = destOut.replace(/\/\//, "/");
 
     this.sources.forEach(function(f) {
-        var i, slen;
+        var slen;
         slen = f.src.length;
         f.src.filter(function(filepath) {
             if (filepath.indexOf("min.js") === -1) {
@@ -79,10 +79,17 @@ MinifyEach.prototype.processFiles = function() {
                 if (minDest === '') {
                     minFileOut = destOut + fname.replace(".js", "-min.js");
                 } else {
-                    minFileOut = minDest + fname;
+                    minDest = minDest.replace(/\/\//, "/");
+                    if (fname.indexOf(destOut) !== -1) {
+                        minFileOut = fname.replace(destOut, minDest);
+                        minFileOut = minDest + fname;
+                    } else {
+                        minFileOut = minDest + fname;
+                    }
                     grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf("/")));
                 }
-                self.compress(destOut + fname, minFileOut, type, params);
+                //console.log("xxxx " + minDest + " " + fname + " " + minFileOut);
+                self.compress(fname, minFileOut, type, params);
             }
         });
     });
