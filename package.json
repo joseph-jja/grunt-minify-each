@@ -1,6 +1,6 @@
 {
     "name": "grunt-minify-each",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Grunt plugin to minify individual files, so that unminified and minified files can be used in an environment",
     "main": "Gruntfile.js",
     "directories": {
