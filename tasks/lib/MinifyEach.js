@@ -61,6 +61,7 @@ MinifyEach.prototype.processFiles = function() {
     filter = this.sourceFilter;
 
     destOut = (dest.charAt[dest.length - 1] === "/") ? dest : dest + "/";
+    destOut = destOut.replace(/\/\//, "/");
 
     this.sources.forEach(function(f) {
         var i, slen;
@@ -70,7 +71,9 @@ MinifyEach.prototype.processFiles = function() {
                 fname = filepath.replace(filter, '');
 
                 // copy source file
-                grunt.file.copy(filepath, destOut + fname);
+                if (fname.indexOf(destOut) === -1) {
+                    grunt.file.copy(filepath, destOut + fname);
+                }
 
                 // create minified dest file 
                 if (minDest === '') {
