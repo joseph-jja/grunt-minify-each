@@ -62,7 +62,7 @@ MinifyEach.prototype.processFiles = function() {
 
     destOut = (dest.charAt[dest.length - 1] === "/") ? dest : dest + "/";
     destOut = destOut.replace(/\/\//, "/");
-    
+
     minDest = minDest.replace(/\/\//, "/");
 
     this.sources.forEach(function(f) {
@@ -84,7 +84,7 @@ MinifyEach.prototype.processFiles = function() {
                 } else {
                     if (fname.indexOf(destOut) !== -1) {
                         minFileOut = fname.replace(destOut, minDest);
-                        if ( minFileOut.indexOf(minDest) === -1 ) {
+                        if (minFileOut.indexOf(minDest) === -1) {
                             grunt.log.writeln("Weirdness happens! " + minFileOut);
                             //minFileOut = minDest + fname;
                         }
@@ -93,7 +93,7 @@ MinifyEach.prototype.processFiles = function() {
                     }
                     grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf("/")));
                 }
-                if ( fname.indexOf(minDest) === -1 ) {
+                if (fname.indexOf(minDest) === -1) {
                     //console.log("xxxx " + fname.indexOf(destOut) + " " + fname + " " + minFileOut);
                     self.compress(fname, minFileOut, type, params);
                 }
