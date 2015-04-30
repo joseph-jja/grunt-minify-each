@@ -62,12 +62,15 @@ MinifyEach.prototype.processFiles = function() {
 
     destOut = (dest.charAt[dest.length - 1] === "/") ? dest : dest + "/";
     destOut = destOut.replace(/\/\//, "/");
+    
+    minDest = minDest.replace(/\/\//, "/");
 
     this.sources.forEach(function(f) {
         var slen;
         slen = f.src.length;
         f.src.filter(function(filepath) {
-            if (filepath.indexOf("min.js") === -1) {
+            // don't minify the minified files from previous run
+            if (filepath.indexOf("min.js") === -1 && filepath.indexOf(minDest) === -1) {
                 fname = filepath.replace(filter, '');
 
                 // copy source file
@@ -79,17 +82,21 @@ MinifyEach.prototype.processFiles = function() {
                 if (minDest === '') {
                     minFileOut = destOut + fname.replace(".js", "-min.js");
                 } else {
-                    minDest = minDest.replace(/\/\//, "/");
                     if (fname.indexOf(destOut) !== -1) {
                         minFileOut = fname.replace(destOut, minDest);
-                        minFileOut = minDest + fname;
+                        if ( minFileOut.indexOf(minDest) === -1 ) {
+                            grunt.log.writeln("Weirdness happens! " + minFileOut);
+                            //minFileOut = minDest + fname;
+                        }
                     } else {
                         minFileOut = minDest + fname;
                     }
                     grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf("/")));
                 }
-                //console.log("xxxx " + minDest + " " + fname + " " + minFileOut);
-                self.compress(fname, minFileOut, type, params);
+                if ( fname.indexOf(minDest) === -1 ) {
+                    //console.log("xxxx " + fname.indexOf(destOut) + " " + fname + " " + minFileOut);
+                    self.compress(fname, minFileOut, type, params);
+                }
             }
         });
     });
