@@ -42,7 +42,8 @@ MinifyEach.prototype.compress = function ( sourceFile, destFile, type, params ) 
     }
 
     try {
-        console.log( sourceFile + " " + destFile );
+        grunt.log.debug( "Compressor source " + sourceFile );
+        grunt.log.debug( "Compressor destination " + destFile );
         comp = new Compressor.minify( {
             'type': type,
             'fileIn': sourceFile,
@@ -57,31 +58,32 @@ MinifyEach.prototype.compress = function ( sourceFile, destFile, type, params ) 
 
 MinifyEach.prototype.processFiles = function () {
     var destOut, fname, filter, minFileOut, minDest, dest, type, params, self = this,
-        forwardSlash = /\//g;
+        forwardSlash = /\//g,
+        leadingSlash = new RegExp( "^" + path.sep );
 
     dest = path.resolve( this.dest );
-    if ( this.minDest === '' ) {
-        minDest = 'min';
-    } else {
-        minDest = path.resolve( this.minDest );
-    }
+
     type = this.type;
     params = this.parameters;
     filter = this.sourceFilter;
+    minDest = this.minDest;
 
     destOut = ( dest.charAt[ dest.length - 1 ] === path.sep ) ? dest : dest + path.sep;
     destOut = path.normalize( destOut );
 
+    grunt.log.debug( "Option minDest " + minDest );
     if ( minDest !== '' ) {
         minDest = path.join( dest, minDest );
     }
+    grunt.log.debug( "Updated minDest " + minDest );
 
+    // log all the data that we are passing in
     grunt.log.debug( "Options: " + JSON.stringify( {
         'dest': dest,
         'type': type,
         'parameters': params,
         'minDest': minDest,
-        'sourceFilter': filter
+        'sourceFilter': filter.toString()
     } ) );
 
     this.sources.forEach( function ( f ) {
@@ -118,8 +120,10 @@ MinifyEach.prototype.processFiles = function () {
                     if ( fname.indexOf( destOut ) !== -1 ) {
                         destOut = path.resolve( destOut );
                         minDest = path.resolve( minDest );
-                        minFileOut = fname.replace( destOut, minDest );
-                        grunt.log.debug( "The output file will be " + minFileOut );
+                        fname = fname.replace( destOut, '' );
+                        fname = fname.replace( leadingSlash, '' );
+                        minFileOut = path.join( minDest, fname );
+                        grunt.log.debug( "The output file will be (f=d)" + minFileOut );
                         if ( minFileOut.indexOf( minDest ) === -1 ) {
                             grunt.log.error( "Weirdness happens! " + minFileOut );
                         }
@@ -128,12 +132,12 @@ MinifyEach.prototype.processFiles = function () {
                         // in this case the fname already has the minDest in it
                         // this likely means that input file is in the generated file
                         minFileOut = fname;
-                        grunt.log.debug( "The output file will be " + minFileOut );
+                        grunt.log.debug( "The output file will be  (f=m)" + minFileOut );
                     } else {
                         // fname does not have destOut nor does it have minDest
                         minDest = path.resolve( minDest );
                         minFileOut = path.join( minDest, fname );
-                        grunt.log.debug( "The output file will be " + minFileOut );
+                        grunt.log.debug( "The output file will be  (f ne)" + minFileOut );
                     }
                 }
                 fullPathInFile = path.resolve( filepath );
