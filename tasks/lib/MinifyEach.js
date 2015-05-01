@@ -112,7 +112,7 @@ MinifyEach.prototype.processFiles = function () {
 
                 // create minified dest file
                 if ( minDest === '' ) {
-                    minFileOut = path.join( destOut, fname.replace( ".js", "-min.js" ) );
+                    minFileOut = fname.replace( ".js", "-min.js" );
                     grunt.log.debug( "Generating minified filename " + minFileOut );
                 } else {
                     // so minDest is NOT an empty string
