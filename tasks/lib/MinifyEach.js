@@ -58,8 +58,7 @@ MinifyEach.prototype.compress = function ( sourceFile, destFile, type, params ) 
 
 MinifyEach.prototype.processFiles = function () {
     var destOut, fname, filter, minFileOut, minDest, dest, type, params, self = this,
-        forwardSlash = /\//g,
-        leadingSlash = new RegExp( "^" + path.sep );
+        forwardSlash = /\//g;
 
     dest = path.resolve( this.dest );
 
@@ -121,7 +120,7 @@ MinifyEach.prototype.processFiles = function () {
                         destOut = path.resolve( destOut );
                         minDest = path.resolve( minDest );
                         fname = fname.replace( destOut, '' );
-                        fname = fname.replace( leadingSlash, '' );
+                        //fname = fname.replace( leadingSlash, '' );
                         minFileOut = path.join( minDest, fname );
                         grunt.log.debug( "The output file will be (f=d)" + minFileOut );
                         if ( minFileOut.indexOf( minDest ) === -1 ) {
