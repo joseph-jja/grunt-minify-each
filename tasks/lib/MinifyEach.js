@@ -1,5 +1,5 @@
 // YUI compressor engine
-var grunt = require("grunt"),
+var grunt = require("grunt"), path = require('path'),
     Compressor = require('node-minify');
 
 function MinifyEach(task, options, sources) {
@@ -39,6 +39,7 @@ MinifyEach.prototype.compress = function(sourceFile, destFile, type, params) {
     }
 
     try {
+        console.log(sourceFile + " " + destFile);
         comp = new Compressor.minify({
             'type': type,
             'fileIn': sourceFile,
@@ -52,35 +53,44 @@ MinifyEach.prototype.compress = function(sourceFile, destFile, type, params) {
 };
 
 MinifyEach.prototype.processFiles = function() {
-    var destOut, fname, filter, minFileOut, minDest, dest, type, params, self = this;
+    var destOut, fname, filter, minFileOut, minDest, dest, type, params, self = this,
+        dedup = new RegExp(path.sep + path.sep), forwardSlash = /\//g;
 
-    dest = this.dest;
-    minDest = this.minDest;
+    dest = path.resolve(this.dest);
+    minDest = path.resolve(this.minDest);
     type = this.type;
     params = this.parameters;
     filter = this.sourceFilter;
 
-    destOut = (dest.charAt[dest.length - 1] === "/") ? dest : dest + "/";
-    destOut = destOut.replace(/\/\//, "/");
+    destOut = (dest.charAt[dest.length - 1] === path.sep) ? dest : dest + path.sep;
+    destOut = destOut.replace(dedup, path.sep);
 
-    minDest = minDest.replace(/\/\//, "/");
+    minDest = minDest.replace(dedup, path.sep);
 
     this.sources.forEach(function(f) {
         var slen;
         slen = f.src.length;
         f.src.filter(function(filepath) {
+            var outfile;
             // don't minify the minified files from previous run
             if (filepath.indexOf("min.js") === -1 && filepath.indexOf(minDest) === -1) {
+                // filepath is the source file, so we need to figure out dest
                 fname = filepath.replace(filter, '');
+
+                // resolve correct fname
+                fname = fname.replace(forwardSlash, path.sep);
 
                 // copy source file
                 if (fname.indexOf(destOut) === -1) {
-                    grunt.file.copy(filepath, destOut + fname);
+                    outfile =  path.join(destOut, fname);
+                    grunt.log.debug("Copy source " + filepath + " to dest " +  path.join(destOut, fname));
+                    grunt.file.copy(filepath, path.join(destOut, fname));
                 }
 
                 // create minified dest file 
                 if (minDest === '') {
-                    minFileOut = destOut + fname.replace(".js", "-min.js");
+                    // not tested :O
+                    minFileOut = path.join(destOut, fname.replace(".js", "-min.js"));
                 } else {
                     if (fname.indexOf(destOut) !== -1) {
                         minFileOut = fname.replace(destOut, minDest);
@@ -89,13 +99,13 @@ MinifyEach.prototype.processFiles = function() {
                             //minFileOut = minDest + fname;
                         }
                     } else {
-                        minFileOut = minDest + fname;
+                        minFileOut = path.join(minDest, fname);
                     }
-                    grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf("/")));
+                    grunt.file.mkdir(minFileOut.substring(0, minFileOut.lastIndexOf(path.sep)));
                 }
                 if (fname.indexOf(minDest) === -1) {
                     //console.log("xxxx " + fname.indexOf(destOut) + " " + fname + " " + minFileOut);
-                    self.compress(fname, minFileOut, type, params);
+                    self.compress(filepath, minFileOut, type, params);
                 }
             }
         });
