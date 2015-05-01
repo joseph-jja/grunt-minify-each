@@ -30,7 +30,10 @@ module.exports = function(grunt) {
         },
 
         jsbeautifier: {
-            files: '<%= jshint.files %>'
+            files: '<%= jshint.files %>',
+            options: {
+                config: '.jsbeautifyrc'
+            }
         },
 
         // Configuration to be run (and then tested).
@@ -40,16 +43,7 @@ module.exports = function(grunt) {
                 files: {
                     'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
                 },
-            },
-            custom_options: {
-                options: {
-                    separator: ': ',
-                    punctuation: ' !!!',
-                },
-                files: {
-                    'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-                },
-            },
+            }
         },
 
         // Unit tests.
