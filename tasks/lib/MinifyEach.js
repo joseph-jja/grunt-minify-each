@@ -124,7 +124,9 @@ MinifyEach.prototype.processFiles = function () {
                             grunt.log.error( "Weirdness happens! " + minFileOut );
                         }
                     } else if ( fname.indexOf( minDest ) !== -1 ) {
-                        // this is wrong?
+                        // this is wrong and we should not have this
+                        // in this case the fname already has the minDest in it
+                        // this likely means that input file is in the generated file
                         minFileOut = fname;
                         grunt.log.debug( "The output file will be " + minFileOut );
                     } else {
