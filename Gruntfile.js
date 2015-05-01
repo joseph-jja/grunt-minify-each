@@ -8,10 +8,10 @@
 
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function ( grunt ) {
 
     // Project configuration.
-    grunt.initConfig({
+    grunt.initConfig( {
         jshint: {
             files: [
                 "package.json",
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 
         // Before generating any new files, remove any previously-created files.
         clean: {
-            tests: ['tmp', 'coverage', 'logs'],
+            tests: [ 'tmp', 'coverage', 'logs', 'build' ],
         },
 
         jsbeautifier: {
@@ -38,19 +38,22 @@ module.exports = function(grunt) {
 
         // Configuration to be run (and then tested).
         minify_each: {
-            default_options: {
-                options: {},
-                files: {
-                    'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-                },
+            options: {
+                dest: 'build',
+                minDest: 'min',
+                sourceFilter: 'tasks'
+            },
+            files: {
+                'src': '<%=jshint.files%>'
             }
+
         },
 
         // Unit tests.
         jasmine_node: {
             src: 'tasks/**/**.js',
             projectRoot: ".",
-            specFolders: ["./test/"],
+            specFolders: [ "./test/" ],
             verbose: true,
             options: {
                 specNameMatcher: "*_spec*", // load only specs containing specNameMatcher
@@ -65,26 +68,26 @@ module.exports = function(grunt) {
             },
             coverage: {
                 //collect: ['tasks/**/**.js'],
-                report: ['html']
+                report: [ 'html' ]
             }
         }
 
-    });
+    } );
 
     // Actually load this plugin's task(s).
-    grunt.loadTasks('tasks');
+    grunt.loadTasks( 'tasks' );
 
     // These plugins provide necessary tasks.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-jasmine-node');
-    grunt.loadNpmTasks('grunt-jasmine-node-coverage');
-    grunt.loadNpmTasks('grunt-jsbeautifier');
+    grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+    grunt.loadNpmTasks( 'grunt-contrib-clean' );
+    grunt.loadNpmTasks( 'grunt-jasmine-node' );
+    grunt.loadNpmTasks( 'grunt-jasmine-node-coverage' );
+    grunt.loadNpmTasks( 'grunt-jsbeautifier' );
 
     // Whenever the "test" task is run, first clean the "tmp" dir, then run this
     // plugin's task(s), then test the result.
-    grunt.registerTask('test', ['clean', 'jasmine_node']);
+    grunt.registerTask( 'test', [ 'clean', 'jasmine_node' ] );
 
     // By default, lint and run all tests.
-    grunt.registerTask('default', ['clean', 'jsbeautifier', 'jshint', 'jasmine_node']);
+    grunt.registerTask( 'default', [ 'clean', 'jsbeautifier', 'jshint', 'jasmine_node' ] );
 };

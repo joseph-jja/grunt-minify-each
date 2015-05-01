@@ -183,7 +183,7 @@
     <h1>Code coverage report for <span class="entity">test/minify_each_spec.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">93.33% <small>(28 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">93.94% <small>(31 / 33)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -192,7 +192,7 @@
         Functions: <span class="metric">75% <small>(6 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">93.33% <small>(28 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">93.94% <small>(31 / 33)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
     <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">test/</a> &#187; minify_each_spec.js</div>
@@ -269,7 +269,10 @@
 68
 69
 70
-71</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+71
+72
+73
+74</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
@@ -281,11 +284,13 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -297,6 +302,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
@@ -339,82 +345,85 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var grunt = require("grunt"),
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var grunt = require( "grunt" ),
     _ = grunt.util._;
 &nbsp;
-describe("minify each test", function() {
+describe( "minify each test", function () {
 &nbsp;
-    var MinifyEach = require("../tasks/lib/MinifyEach");
+    var MinifyEach = require( "../tasks/lib/MinifyEach" );
 &nbsp;
-    var minify = require("../tasks/minify_each");
+    var minify = require( "../tasks/minify_each" );
 &nbsp;
-    var makeMockTask = function(done) {
-        return {
-            _taskOptions: {
-                dest: 'build',
-                minDest: '',
-                type: 'uglifyjs',
-                parameters: ['--max-line-len=10000', '--lift-vars', '-m']
-            },
-            files: [{
-                src: grunt.file.expand({}, "tasks/**/*.js")
-            }],
+    var makeMockTask = function ( done ) {
+        var o, taskOptions;
+&nbsp;
+        taskOptions = {
+            dest: 'build',
+            minDest: 'min',
             type: 'uglifyjs',
-            options: <span class="fstat-no" title="function not covered" >function(defs) {</span>
-<span class="cstat-no" title="statement not covered" >                return _.defaults(this._taskOptions, defs);</span>
+            parameters: [ '--max-line-len=10000', '--lift-vars', '-m' ]
+        };
+        o = {
+            files: [ {
+                src: grunt.file.expand( {}, "tasks/**/*.js" )
+            } ],
+            type: 'uglifyjs',
+            options: <span class="fstat-no" title="function not covered" >function ( defs ) {</span>
+<span class="cstat-no" title="statement not covered" >                return _.defaults( taskOptions, defs );</span>
             },
-            async: <span class="fstat-no" title="function not covered" >function() {</span>
+            async: <span class="fstat-no" title="function not covered" >function () {</span>
 <span class="cstat-no" title="statement not covered" >                return done;</span>
             }
         };
+        return o;
     };
 &nbsp;
-    it("test node require includes", function() {
+    it( "test node require includes", function () {
 &nbsp;
-        expect(minify).toNotEqual(undefined);
-        expect(MinifyEach).toNotEqual(undefined);
+        expect( minify ).toNotEqual( undefined );
+        expect( MinifyEach ).toNotEqual( undefined );
 &nbsp;
-    });
+    } );
 &nbsp;
-    it("registers itself with grunt", function() {
+    it( "registers itself with grunt", function () {
 &nbsp;
-        minify(grunt);
+        minify( grunt );
 &nbsp;
         // Check that it registered
-        expect(grunt.task._tasks[MinifyEach.TASK_NAME]).toNotEqual(undefined);
-        expect(grunt.task._tasks[MinifyEach.TASK_NAME].info).toEqual(MinifyEach.TASK_DESCRIPTION);
-    });
+        expect( grunt.task._tasks[ MinifyEach.TASK_NAME ] ).toNotEqual( undefined );
+        expect( grunt.task._tasks[ MinifyEach.TASK_NAME ].info ).toEqual( MinifyEach.TASK_DESCRIPTION );
+    } );
 &nbsp;
-    it("loads options from a task", function() {
+    it( "loads options from a task", function () {
         var mock, task, files, actual;
 &nbsp;
         mock = makeMockTask();
-        task = new MinifyEach(mock, mock, mock.files);
+        task = new MinifyEach( mock, mock, mock.files );
         actual = task.options;
 &nbsp;
-        expect(actual).toNotEqual(undefined);
-        expect(actual.engine).toEqual(task.Defaults.engine);
-    });
+        expect( actual ).toNotEqual( undefined );
+        expect( actual.engine ).toEqual( task.Defaults.engine );
+    } );
 &nbsp;
-    it("run MinifyEach ", function() {
+    it( "run MinifyEach ", function () {
         var mock, files, task;
 &nbsp;
         mock = makeMockTask();
-        console.log(mock.files);
-        task = new MinifyEach(mock, mock, mock.files);
+        console.error( mock.files );
+        task = new MinifyEach( mock, mock, mock.files );
 &nbsp;
-        spyOn(task, 'processFiles').andCallThrough();
+        spyOn( task, 'processFiles' ).andCallThrough();
         task.processFiles();
-        expect(task.processFiles).toHaveBeenCalled();
+        expect( task.processFiles ).toHaveBeenCalled();
 &nbsp;
-    });
-});
+    } );
+} );
 &nbsp;</pre></td></tr>
 </table></pre>
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 30 2015 17:25:37 GMT-0700 (PDT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 30 2015 20:33:25 GMT-0700 (PDT)</div>
 </div>
 
 <script src="../prettify.js"></script>
