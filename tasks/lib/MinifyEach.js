@@ -112,18 +112,27 @@ MinifyEach.prototype.processFiles = function () {
                 if ( minDest === '' ) {
                     minFileOut = path.join( destOut, fname.replace( ".js", "-min.js" ) );
                     grunt.log.debug( "Generating minified filename " + minFileOut );
-                } else if ( fname.indexOf( destOut ) !== -1 ) {
-                    destOut = path.resolve( destOut );
-                    minDest = path.resolve( minDest );
-                    minFileOut = fname.replace( destOut, minDest );
-                    grunt.log.debug( "Generating minified filename " + minFileOut );
-                    if ( minFileOut.indexOf( minDest ) === -1 ) {
-                        grunt.log.error( "Weirdness happens! " + minFileOut );
-                    }
                 } else {
-                    // ok so if we get here something is wrong?
-                    minFileOut = path.join( minDest, fname );
-                    grunt.log.error( "Weirdness happens! " + minFileOut );
+                    // so minDest is NOT an empty string
+                    // so we are sticking in some other directory
+                    if ( fname.indexOf( destOut ) !== -1 ) {
+                        destOut = path.resolve( destOut );
+                        minDest = path.resolve( minDest );
+                        minFileOut = fname.replace( destOut, minDest );
+                        grunt.log.debug( "The output file will be " + minFileOut );
+                        if ( minFileOut.indexOf( minDest ) === -1 ) {
+                            grunt.log.error( "Weirdness happens! " + minFileOut );
+                        }
+                    } else if ( fname.indexOf( minDest ) !== -1 ) {
+                        // this is wrong?
+                        minFileOut = fname;
+                        grunt.log.debug( "The output file will be " + minFileOut );
+                    } else {
+                        // fname does not have destOut nor does it have minDest
+                        minDest = path.resolve( minDest );
+                        minFileOut = path.join( minDest, fname );
+                        grunt.log.debug( "The output file will be " + minFileOut );
+                    }
                 }
                 fullPathInFile = path.resolve( filepath );
                 minFileOut = path.resolve( minFileOut );
