@@ -80,7 +80,7 @@ describe( "minify each test", function () {
         expect( actual.engine ).toEqual( task.Defaults.engine );
     } );
 
-    it( "run MinifyEach for -min files", function () {
+    it( "run MinifyEach for -min files", function ( done ) {
         var mock, files, task, minFile;
 
         mock = makeMockTask();
@@ -90,14 +90,15 @@ describe( "minify each test", function () {
         spyOn( task, 'processFiles' ).andCallThrough();
         task.processFiles();
         expect( task.processFiles ).toHaveBeenCalled();
-
-        minFile = grunt.file.exists( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
-        console.log( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
-        expect( minFile ).toBe( true );
-
+        setTimeout( function () {
+            minFile = grunt.file.exists( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
+            console.log( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
+            done();
+            expect( minFile ).toBe( true );
+        }, 1000 );
     } );
 
-    it( "run MinifyEach for min directory", function () {
+    it( "run MinifyEach for min directory", function ( done ) {
         var mock, files, task, minFile;
 
         mock = makeMockTaskAlt();
@@ -107,9 +108,11 @@ describe( "minify each test", function () {
         spyOn( task, 'processFiles' ).andCallThrough();
         task.processFiles();
         expect( task.processFiles ).toHaveBeenCalled();
-
-        minFile = grunt.file.exists( path.resolve( 'build/min/tasks/lib/MinifyEach.js' ) );
-        console.log( minFile );
-        expect( minFile ).toEqual( true );
+        setTimeout( function () {
+            minFile = grunt.file.exists( path.resolve( 'build/min/tasks/lib/MinifyEach.js' ) );
+            console.log( minFile );
+            done();
+            expect( minFile ).toEqual( true );
+        }, 1000 );
     } );
 } );
