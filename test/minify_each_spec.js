@@ -92,7 +92,8 @@ describe( "minify each test", function () {
         expect( task.processFiles ).toHaveBeenCalled();
 
         minFile = grunt.file.exists( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
-        //expect( minFile ).toEqual( true );
+        console.log( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
+        expect( minFile ).toBe( true );
 
     } );
 
@@ -108,6 +109,7 @@ describe( "minify each test", function () {
         expect( task.processFiles ).toHaveBeenCalled();
 
         minFile = grunt.file.exists( path.resolve( 'build/min/tasks/lib/MinifyEach.js' ) );
-        //expect( minFile ).toEqual( true );
+        console.log( minFile );
+        expect( minFile ).toEqual( true );
     } );
 } );
