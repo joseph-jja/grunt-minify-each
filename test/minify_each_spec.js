@@ -95,7 +95,7 @@ describe( "minify each test", function () {
             console.log( path.resolve( 'build/tasks/lib/MinifyEach-min.js' ) );
             done();
             expect( minFile ).toBe( true );
-        }, 1000 );
+        }, 250 );
     } );
 
     it( "run MinifyEach for min directory", function ( done ) {
@@ -113,6 +113,6 @@ describe( "minify each test", function () {
             console.log( minFile );
             done();
             expect( minFile ).toEqual( true );
-        }, 1000 );
+        }, 250 );
     } );
 } );

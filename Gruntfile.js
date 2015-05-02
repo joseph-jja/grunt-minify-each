@@ -51,24 +51,17 @@ module.exports = function ( grunt ) {
 
         // Unit tests.
         jasmine_node: {
-            src: 'tasks/**/**.js',
-            projectRoot: ".",
-            specFolders: [ "./test/" ],
-            verbose: true,
             options: {
-                specNameMatcher: "*_spec*", // load only specs containing specNameMatcher
                 forceExit: true,
-                jUnit: {
-                    report: false,
-                    savePath: "./coverage/",
-                    useDotNotation: true,
-                    consolidate: true
+                match: '.',
+                extensions: 'js',
+                specFolders: [ 'test' ],
+                specNameMatcher: '_spec',
+                coverage: {
+                    report: [ 'html' ]
                 }
             },
-            coverage: {
-                //collect: ['tasks/**/**.js'],
-                report: [ 'html' ]
-            }
+            all: [ "./tasks/**/**.js", "./test/**.js" ]
         }
 
     } );
