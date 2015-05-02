@@ -57,7 +57,6 @@ module.exports = function ( grunt ) {
             verbose: true,
             options: {
                 specNameMatcher: "*_spec*", // load only specs containing specNameMatcher
-                requirejs: false,
                 forceExit: true,
                 jUnit: {
                     report: false,
