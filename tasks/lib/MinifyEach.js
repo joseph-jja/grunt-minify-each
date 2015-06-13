@@ -36,7 +36,7 @@ MinifyEach.prototype.compress = function ( sourceFile, destFile, type, params ) 
             grunt.log.warn( error, min );
             return;
         }
-        grunt.log.writeln( 'File `' + destFile + '` created.' );
+        grunt.log.debug( 'File `' + destFile + '` created.' );
         // Let Grunt know the asynchronous task has completed
         return;
     }
@@ -144,7 +144,7 @@ MinifyEach.prototype.processFiles = function () {
                 // input file and output files cannot be the same file
                 if ( fullPathInFile !== minFileOut ) {
                     grunt.file.mkdir( minFileOut.substring( 0, minFileOut.lastIndexOf( path.sep ) ) );
-                    grunt.log.writeln( "Source file : " + filepath + " minified file: " + minFileOut );
+                    grunt.log.debug( "Source file : " + filepath + " minified file: " + minFileOut );
                     self.compress( filepath, minFileOut, type, params );
                 }
             }
